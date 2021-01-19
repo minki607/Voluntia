@@ -1,0 +1,48 @@
+//sign-up template for volunteers
+
+doctype html
+html
+  include head
+
+  body
+    nav
+      include navbar
+
+  .signup-back.reg-vol
+    .row.signup-form
+      .col-md-6.m-auto
+          .card-body
+            h1.text-center.mb-3
+              |  Register
+            h4.text-center.mb-3.heading-primary-sub
+              |  As Volunteer
+          form(action='/volunteer/signup', method='POST')
+            if errors
+              each error in errors
+                div(class='alert alert-danger', role='alert') #{error.msg}
+            .name.row
+              .form-group.col-md-6.pl-0
+                label(for='firstName') First Name
+                input#firstName.form-control(type='firstName', name='firstName', placeholder='Enter First Name', value="", maxlength ='20')
+              .form-group.col-md-6.pr-0
+                label(for='lastName') Last Name
+                input#lastName.form-control(type='lastName', name='lastName', placeholder='Enter Last Name', value="", maxlength ='20')
+
+
+            .form-group
+              label(for='email') Email
+              input#email.form-control(type='email', name='email', placeholder='Enter Email', value="")
+            .form-group
+              label(for='password') Password
+              input#password.form-control(type='password', name='password', placeholder='Create Password', value="")
+            .form-group
+              label(for='password') Confirm Password
+              input#password.form-control(type='password', name='cpassword', placeholder='Confirm Password', value="")
+            button.btn.btn-block.signup-btn(type='submit')
+              | Register
+            p.lead.mt-4.text-center
+              | Have An Account?
+              |
+              a(href='/login')   Login
+
+  include footer

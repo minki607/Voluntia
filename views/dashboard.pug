@@ -1,0 +1,138 @@
+//template for volunteer dashboard
+doctype html
+html
+  include head
+
+  body
+    nav
+      include navbar
+
+    - var months = [ "JAN", "FEB", "MAR", "APR", "MAY", "JUNE","JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
+    .row.content
+      .col-md-4.sidenav
+        h3.heading-primary-sub(style="font-size: 30px") Welcome #{firstName}
+        include volunteer_sidebar
+        br
+
+      .col-md-8.contentinfo
+        .heading-primary-sub.text-center(style="font-size: 30px; color:#565656;") Status
+        //overview of the statistics, depending on the number of requests count make it plural
+        section.statistics.p-4
+          .row
+            .col-md-4
+              .box
+                i.fas.fa-hourglass-half.text-center.pt-3
+                .info
+                  h3 #{pendingRequestCount}
+                  span  Request
+                  if pendingRequestCount > 1
+                    span s
+                  p Pending
+            .col-md-4
+              .box
+                i.far.fa-calendar-check.text-center.pt-3
+                .info
+                  h3 #{acceptedRequestCount}
+                  span  Request
+                  if acceptedRequestCount > 1
+                    span s
+                  p Confirmed
+            .col-md-4
+              .box
+                i.fas.fa-check.text-center.pt-3
+                .info
+                  h3 #{completedEventCount}
+                  span  Request
+                  if completedEventCount > 1
+                    span s
+                  p Completed
+
+
+        // if theres any accepted events for the following user display them in dashboard
+        if (accepted.length != 0)
+          .row.col-md-12.mb-3
+            .heading-primary-sub.text-center.pb-4(style="font-size: 30px; color:#565656;") Accepted Events
+          for item in accepted
+            // only display event that has not passed the current day( since org might have forgot to complete it)
+            if item.event.date > new Date
+              .list-group-item.col-md-12
+                a.fill-div.p-1.bg-white(href=`/request/${item.eventId}/${item.userId}`)
+                  .event-date(style="float:left;")
+                    span#date #{item.event.date.getDate()}
+                    span#month #{months[item.event.date.getMonth()]}
+                  span #{"  " + item.event.name }
+
+          //profile edit section
+
+        .row.col-md-12.mt-5
+          .card-body.col-md-12.col-lg-6.p-0
+            .heading-primary-sub.text-center.pb-4(style="font-size: 30px; color:#565656;") Your Profile
+            form(action=`/users/${userId}/update`, method='POST')
+
+              if errors
+                each error in errors
+                  div(class='alert alert-danger', role='alert') #{error.msg}
+              //if users are missing core information display warning message to prompt user to fill in
+              if (!user.firstName || !user.lastName || !user.bio || !user.experience)
+                .alert.alert-warning(role='alert') Please fill out the empty fields for successful booking requests
+              .name.row
+                .form-group.col-lg-6.p-0
+                  label(for='firstName') First Name
+                  input#firstName.form-control(type='text', name='firstName', placeholder='Enter First Name', value=user.firstName, maxlength ='20')
+                .form-group.col-lg-6.p-0
+                  label(for='lastName') Last Name
+                  input#lastName.form-control(type='text', name='lastName', placeholder='Enter Last Name', value=user.lastName, maxlength ='20')
+              .form-group
+                label(for='email') Email
+                input#email.form-control(type='email', name='email', value=user.email, placeholder='Enter Email', readonly=true)
+              .form-group
+                label(for='bio') Bio
+                textarea#bio.form-control(type='text', name='bio', placeholder='Bio', maxlength='300' style="min-height: 150px") #{user.bio}
+              .form-group
+                label(for='experience') Experience
+                input#experience.form-control(type='text', name='experience', value=user.experience, placeholder='Experience', maxlength='100')
+
+              button.btn.btn-block.signup-btn(type='submit')
+                | Update profile
+
+          //if theres weekly upcoming events to display (event occuring +7d from current day) create card carousel
+          if (weekEvent)
+
+            .col-md-12.col-lg-6.pt-4
+              .heading-primary-sub.text-center.pb-4(style="font-size: 30px; color:#565656;")  Upcoming Events
+              #week-slider.owl-carousel
+                each event in weekEvent
+                  .event-slide
+                    .event-img
+                      img(src=`${event.image}`, alt=`${event.name}`)
+                      .over-layer
+                        ul.event-link
+                          li
+                            a.fa.fa-search(href=`/event/${event.id}`)
+                      .event-date
+                        span.date #{event.date.getDate()}
+                        span.month #{months[event.date.getMonth()]}
+                    .event-content
+                      h3.event-title
+                        a(href='#') #{event.name}
+                      p.event-description
+                        //limit description to 200 words to make height uniform
+                        | #{(event.description).substring(0, 200) + "..."}
+
+                      a.read-more(href=`/event/${event.id}`) read more
+
+        script
+          include carousel.js
+
+
+
+  include footer
+
+
+        
+
+
+
+
+
+

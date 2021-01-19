@@ -1,0 +1,76 @@
+//template used to add event
+
+doctype html
+html
+    include head
+
+    body
+        script
+            include progress.js
+
+
+        nav
+            include navbar
+
+    .signup-back.reg-vol.addform
+        .row.signup-form
+            .col-md-6.m-auto
+                .card-body
+                    h1.text-center.mb-3
+                        |  Add
+                    h4.text-center.mb-3.heading-primary-sub
+                        |  An Event
+                //multipart included for uploading files
+                form(action='/event/add', method='POST' enctype="multipart/form-data")
+
+                    .form-group
+                        label(for='name') Name(*)
+                        input.txt(type='text', required='', placeholder='Please input event name', name='name' maxlength="40")
+                    .form-group
+                        label(for='date') Date(*)
+                        input.text-center(id='datefield', required='', type='date', name='date',class="date-picker form-control")
+
+                        script
+                            include date_restrict.js
+
+                    .name.row
+                        .form-group.col-md-6.p-0
+                            label(for='type') Type(*)
+                            input.txt(type='text', required='', placeholder='Please input type of event', name='type' maxlength="30")
+                        .form-group.col-md-6.p-0
+                            label(for='location') Location(*)
+                            input.txt(type='text', required='', placeholder='Please input location of event', name='location' maxlength="40")
+
+                    script
+                        include image_upload.js
+
+                    .form-group
+                        label(for='image') Image(*)
+                        .image-upload-wrap
+                            input.file-upload-input(type='file', onchange='readURL(this);', accept='image/*' name='image', required='')
+                            .drag-text
+                                h3  Click/Drag and drop to Upload
+                        .file-upload-content
+                            img.file-upload-image(src='#', alt='your image')
+                            .image-title-wrap
+                                button.remove-image(type='button', onclick='removeUpload()')
+                                    | Remove
+                                    span.image-title Uploaded Image
+
+                    //description app using angular. Progress bar changes color at 50% and 75%, if exceeding 100%, add button is disabled
+                    body(ng-app='descApp')
+                        div(ng-controller='myController')
+                                form
+                                    .form-group
+                                        label(for='description') Description (Max: 350)
+                                        textarea#comment.form-control.textarea-bounds(name='description', ng-model='description' style="min-height: 200px;")
+                                    .form-group.mb-3
+                                        .progress
+                                            .progress-bar.progress-bar-striped.progress-bar-animated(role='progressbar', aria-valuemax='100', ng-style='setProgressWidth()',
+                                            ng-class="{'bg-warning':progressOver50(),'bg-danger':progressOver75()}")
+                                    .form-group.text-right
+
+                                        button.btn.btn-block.signup-btn(type='submit', ng-disabled = 'validateDesc()') ADD EVENT
+
+
+    include footer

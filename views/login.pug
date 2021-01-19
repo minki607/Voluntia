@@ -1,0 +1,33 @@
+//template used for log in
+
+doctype html
+html
+    include head
+
+    body
+        nav
+            include navbar
+
+    .signup-back.login-back
+        .row
+            .col-md-6.m-auto
+                .card-body
+                    h1.text-center.mb-3
+                        |  LOGIN
+                    form(action='/login', method='POST')
+                        //if there's a message passed on from controller display it here
+                        //message type defines the bootstrap class and overrides css
+                        if message.body
+                            div(class='alert text-center '+ message.type, role='alert') #{message.body}
+                        .form-group
+                            label(for='email') Email address
+                            input#username.form-control(type='username', name='email', placeholder='Enter email address')
+                        .form-group
+                            label(for='password') Password
+                            input#password.form-control(type='password', name='password', placeholder='Enter Password')
+                        button.btn.btn-block.login-btn(type='submit') Login
+                    p.lead.mt-4.text-center
+                        | No Account?
+                        a(href='/signup')  Register
+
+    include footer

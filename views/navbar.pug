@@ -1,0 +1,36 @@
+//template for navbar, is included at top of every other rendered template
+
+nav.navbar.navbar-default.navbar-expand-lg.navbar-light
+    .navbar-header.d-flex.col
+        a.navbar-brand(href='/')
+            img(src='/images/logo.jpg', alt='LOGO')
+            b Voluntia
+        button.navbar-toggle.navbar-toggler.ml-auto(type='button', data-target='#navbarCollapse', data-toggle='collapse')
+            span.navbar-toggler-icon
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+    // Collection of nav links, forms, and other content for toggling
+    #navbarCollapse.collapse.navbar-collapse
+        ul.nav.navbar-nav.text-center
+
+            li.nav-item
+                a.nav-link(href='/') Home
+            li.nav-item
+                a.nav-link(href='/about') About
+            li.nav-item
+                a.nav-link(href='/contact') Contact
+
+
+        ul.nav.navbar-nav.navbar-right.ml-auto.text-center
+            if !isAuthenticated
+                li.nav-item
+                    a.nav-link(href='/login') Login
+                li.nav-item
+                    a.btn.btn-primary.get-started-btn.mt-1.mb-1(href='/signup') Sign up
+
+            if isAuthenticated
+                li.nav-item.text-center
+                    a.nav-link.btn.i.fas.fa-chalkboard-teacher(href=`${(isOrganization || isOrg ) ? "/dashboardadmin" : "/dashboard"}`)
+                li.nav-item
+                    a.btn.btn-primary.get-started-btn.mt-1.mb-1(href='/logout') Log Out

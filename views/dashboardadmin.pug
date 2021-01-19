@@ -1,0 +1,106 @@
+//template for organization dashboard
+
+doctype html
+html
+    include head
+
+    body
+      nav
+          include navbar
+
+      .container-fluid.orgdash(style="min-height: 100vh")
+        .row.content
+          .col-md-4.sidenav
+            h3.heading-primary-sub(style="font-size: 30px") Welcome #{userName}
+            include sidebar
+
+          .col-md-8.contentinfo
+            .heading-primary-sub.text-center(style="font-size: 30px; color:#565656;")  Status
+            section.statistics
+              .container-fluid
+                .row
+                  .col-lg-4.col-md-6
+                    .box
+                      i.fas.fa-hourglass-half.text-center.pt-3
+                      .info
+                        //if theres more than one count of the event in respective request field make it plural
+                        h3 #{pendingRequestCount}
+                        span  Request
+                        if pendingRequestCount > 1
+                          span s
+                        p Booked
+
+                  .col-lg-4.col-md-6
+                    .box
+                      i.far.fa-calendar-check.text-center.pt-3
+                      .info
+                        h3 #{acceptedRequestCount}
+                        span  Request
+                        if acceptedRequestCount > 1
+                          span s
+                        p Confirmed
+                  .col-lg-4.col-md-6
+                    .box
+                      i.fas.fa-times.text-center.pt-3
+                      .info
+                        h3 #{rejectCount}
+                        span  Request
+                        if rejectCount > 1
+                          span s
+                        p Rejected
+              .container-fluid
+                .row
+
+                    .col-lg-4.col-md-6
+                      .box
+                        i.fas.fa-hourglass-half.text-center.pt-3
+                        .info
+                          h3 #{eventCount}
+                          span  Event
+                          if eventCount > 1
+                            span s
+                          p Created
+
+                    .col-lg-4.col-md-6
+                      .box
+                        i.fas.fa-check.text-center.pt-3
+                        .info
+                          h3 #{completedEventCount}
+                          span  Request
+                          if completedEventCount > 1
+                            span s
+                          p Complete
+
+
+              br
+              //this is for the on-page organization profile editing
+              .card-body
+                .heading-primary-sub.text-center(style="font-size: 30px; color:#565656;")  Organization Profile
+
+                form(action=`/organisations/${organizationId}/update`, method='POST')
+                 
+                  if errors
+                    each error in errors
+                      div(class='alert alert-danger', role='alert') #{error.msg}
+                  .form-group
+                    label(for='name') Name
+                    input#name.form-control(type='text', name='name', value=user.name, maxlength='30')
+                  .form-group
+                    label(for='email') Email
+                    input#email.form-control(type='email', name='email', value=user.email, readonly=true)
+                  .name.row
+                    .form-group.col-md-6.p-0
+                      label(for='estYear')  Year Established
+                      input#bio.form-control(type='number', name='estYear', value=user.estYear, placeholder='Year established')
+                    .form-group.col-md-6.p-0
+                      label(for='type') Organisation Type
+                      input#bio.form-control(type='text', name='type', value=user.type, placeholder='Organisation type', maxlength='20')
+                  button.btn.btn-block.signup-btn.col-md-6.offset-md-3(type='submit')
+                    | Update profile
+
+    include footer
+
+
+
+
+

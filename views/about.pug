@@ -1,0 +1,49 @@
+//this is an about us page template
+
+doctype html
+html
+  include head
+  body
+    nav
+      include navbar
+
+    section
+      .container-fluid
+        .row.about-bg
+          .col-md-6
+          .col-sm-12.col-md-12.col-lg-6.about-bg-layer
+            div
+              .about-content-box
+                .about-heading.text-center.heading-primary
+                  h1(style="border-bottom: 1px solid #f6e4e2; font-size: 35px;") ABOUT US
+                  br
+                  h2(style="font-size: 25px;") Voluntia
+                  p.heading-primary-sub "A PLATFORM THAT CONNECTS PEOPLE AND OPPORTUNITIES"
+                .about-txt.text-center
+                  p
+                    | Social media has a huge impact on the society nowadays as internet and smart phones are
+                    | now easily accessible, from teens, to elderly, with almost 2 billion users on Facebook only,
+                    | and other social medias, around 50% of the world has access to internet. However, as people are
+                    | spending more and more time on social media
+                    | Social media may seem to connect everyone together, but it can also cause users to feel isolated.
+                  p
+                    | Hence we build a volunteering platform that connects people together from online to offline and
+                    | allow them to engage in physical activities and social interactions with the aim of creating a
+                    | better community through the volunteer programs offered by different organizations.
+                    | Firstly, by participating in the volunteer program, we hope that people try to understand more
+                    | about each other and gain a sense of belonging and purpose through the social interactions and by
+                    | contributing back to the community. It would also be a learning opportunity for the volunteer
+                    | while connecting organizations with the volunteer
+                  br
+                  img(src='/images/powered.png' style="height:150px; opacity: 0.8", alt='powered')
+              div(style='float:right; color:#fff;')
+                | Powered by :
+                a(style='color: white', href='/contact') Internet Architects
+
+
+
+                  p.col-md-12
+
+
+  include footer
+

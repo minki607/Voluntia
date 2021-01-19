@@ -1,0 +1,41 @@
+//template for pending requests
+
+doctype html
+html
+    include head
+
+    body
+        nav
+            include navbar
+
+    //include appropriate sidebar
+    .container-fluid.content(style="min-height:100vh;")
+        .row
+            if (!isVolunteer)
+                .col-md-4.sidenav
+                    h3.heading-primary-sub(style ="font-size: 30px") #{title}
+                    include sidebar
+            else if (isVolunteer)
+                .col-md-4.sidenav
+                    h3.heading-primary-sub(style ="font-size: 30px") #{title}
+                    include volunteer_sidebar
+
+            //if theres any requests display request info
+            .col-md-8
+                #event-div
+                    if (requests.length > 0)
+                        .list-group
+                            for item in requests
+                                .list-group-item
+                                        a.fill-div.p-1.bg-white(href=`/request/${(item.event).id}/${item.userId}`)
+                                            //for volunteers it will display you, for organization, the volunteer name
+                                            if (item.userId === currentUser)
+                                                span  #{"You want to attend " + item.event.name}
+                                            else
+                                                span.fill-div(style="background-color: #F6E5E3; padding:10px; float:left;") #{item.userName }
+                                                span #{"  " + item.event.name }
+
+                    else
+                        h2.heading-primary-sub.text-center(style="font-size: 30px") No new requests
+
+    include footer

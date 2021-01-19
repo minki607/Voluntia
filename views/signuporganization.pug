@@ -1,0 +1,41 @@
+//sign-up template for organization
+//only uses bootstrap maxLength to limit length, rest is done in express validation
+
+doctype html
+html
+  include head
+
+  body
+    nav
+      include navbar
+  .signup-back
+    .row.signup-form
+      .col-md-6.m-auto
+        .card-body
+          h1.text-center.mb-3
+            |  Register
+          h4.text-center.mb-3.heading-primary-sub
+            |  As Organization
+          form(action='/organization/signup', method='POST')
+            if errors
+              each error in errors
+                div(class='alert alert-danger text-center', role='alert') #{error.msg}
+            .form-group
+              label(for='name') Name
+              input#name.form-control(type='name', name='name', placeholder='Enter Name' , maxlength ='30')
+            .form-group
+              label(for='email') Email
+              input#email.form-control(type='email', name='email', placeholder='Enter Email')
+            .form-group
+              label(for='password') Password
+              input#password.form-control(type='password', name='password', placeholder='Create Password')
+            .form-group
+              label(for='password') Confirm Password
+              input#password.form-control(type='password', name='cpassword', placeholder='Confirm Password')
+
+            button.btn.btn-block.signup-btn(type='submit')
+              | Register
+            p.lead.mt-4.text-center
+              | Have An Account?
+              a(href='/login')  Login
+  include footer

@@ -1,0 +1,96 @@
+//template used to render single event
+
+doctype html
+html
+    include head
+
+    body
+        nav
+            include navbar
+        //display sidebar based on type of authetication
+        .container-fluid.content
+            .row
+                if(isOrganization)
+                    .col-md-4.sidenav
+                        h3.heading-primary-sub(style ="font-size: 30px") Event Details
+                        include sidebar
+
+                else
+                    .col-md-4.sidenav
+                        h3.heading-primary-sub(style ="font-size: 30px") Event Details
+                        include volunteer_sidebar
+
+                //event name info
+                .col-md-8.content.eventInfo.shadow.p-3.mb-5.bg-white.rounded.mt-5
+                    .eventheading
+                    h1.event-heading.head-style-2.heading-primary-sub.text-uppercase.mt-5.mb-3(style="font-size: 21px;") #{event.name}
+                    .bgimg
+                        img(src=`${event.image}`, alt=`${event.name}`)
+                    //if a request regarding the current event has been sent display it below the image
+                    if (eventStatus === 'pending')
+                        .alert.alert-info(role='alert') Your request is #{eventStatus}
+                    if (eventStatus === 'accept')
+                        .alert.alert-success(role='alert') Your request has been #{eventStatus + "ed"}
+                    if (eventStatus === 'complete')
+                        .alert.alert-success(role='alert') Your request is #{eventStatus}
+                    if (eventStatus === 'reject')
+                        .alert.alert-danger(role='alert') Your request was #{eventStatus}
+
+                    //when a booking is made send the following hidden input
+                    .smallInfo.mt-3
+                        form(action='/event/booking', method='POST')
+                            input(type="hidden" name="username" value=`${name}`)
+                            input(type="hidden" name="userId" value=`${organizationId}`)
+                            input(type="hidden" name="status" value='pending')
+                            input(type="hidden" name="reason" value='')
+                            input(type="hidden" name="event" value=`${JSON.stringify(event)}`)
+                            input(type="hidden" name="eventId" value=`${event._id}`)
+                            input(type="hidden" name="ownerId" value=`${event.organizationId}`)
+
+                            //book button should only be visible by the volunteers
+                            if (!isOrganization && eventStatus == '')
+                                    button#booking.button.btn.btn-pink.book-slot(type='submit'
+                                    Onclick="return confirm('Are you sure you want to book this event?')"
+                                    style="padding: 15px;") Book now
+
+
+                            //remaining information about the events
+                            .box
+                                .container
+                                    .row
+                                        .col-sm-4
+                                            .box-part.text-center
+                                                i.fas.fa-map-marker-alt.fa-3x
+                                                .title.mt-3.text-capitalize
+                                                    | #{event.location}
+
+
+                                        .col-sm-4
+                                            .box-part.text-center
+                                                i.fas.fa-calendar-alt.fa-3x
+                                                .title.mt-3
+                                                    - var months = [ "JAN", "FEB", "MAR", "APR", "MAY", "JUNE","JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
+                                                    | #{months[(event.date).getMonth()]} #{(event.date).getDate()} #{(event.date.getFullYear())}
+
+                                        .col-sm-4
+                                            .box-part.text-center
+                                                i.fas.fa-tag.fa-3x(aria-hidden='true')
+                                                .title.mt-3.text-capitalize
+                                                    | #{event.type}
+
+                    .description.mb-6
+                            h3.heading-primary-sub.text-uppercase.mt-5.mb-3(style="font-size: 21px;") Description
+                            p #{event.description}
+
+
+
+                            if (isOrganization)
+
+                                form(action=`/delete/event/${event.id}` method='POST' )
+                                    button.fill-div.p-3.icon-link(style="border:none", type="submit" onclick="return confirm('Are you sure you want to delete?)")
+                                        i.fas.fa-trash-alt
+                                    a.fill-div.p-3.icon-link(href= `/edit/event/${event.id}`)
+                                        i.fas.fa-edit
+
+
+    include footer

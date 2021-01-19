@@ -1,0 +1,125 @@
+//this is a template where user/volunteers can see their sent requests and manage requests respectively
+
+doctype html
+html
+    include head
+    body
+        nav
+            include navbar
+
+        //uses bootstrap grid - 4 for sidebar and 8 for the rest
+        .container-fluid.content
+            .row
+                if(!isVolunteer)
+                    .col-md-4.sidenav
+                        h3.heading-primary-sub(style ="font-size: 30px") Manage Requests
+                        include sidebar
+
+                else
+                    .col-md-4.sidenav
+                        h3.heading-primary-sub(style ="font-size: 30px") Manage Requests
+                        include volunteer_sidebar
+
+                .col-md-8.content.eventInfo.shadow.p-3.mb-5.bg-white.rounded.mt-5
+                    .eventheading
+                    h1.event-heading.head-style-2.heading-primary-sub.text-uppercase.mt-5.mb-3(style="font-size: 21px;") #{request.event.name}
+                    .bgimg
+                        img(src=`${request.event.image}`, alt=`${request.event.name}`)
+
+                    // for each status display appropriate message and bootstrap custom alert class
+                    if (request.status === 'pending')
+                        if (request.event.organizationId === userId)
+                          .alert.alert-warning(role='alert') #{request.userName + " " + "wants to attend " + request.event.name}
+                          // use bootstrap modal for viewing volunteer profile/ Modal is futher defined below
+                          a(data-toggle='modal' href="#profileModal" class='btn btn-link btn-pink') View profile
+                        else
+                          .alert.alert-warning(role='alert') Your request is #{request.status}
+
+                    if (request.status === 'accept')
+                        if (request.event.organizationId === userId)
+                            .alert.alert-success(role='alert') #{request.userName + " " + "is accepted for " + request.event.name}
+
+                        else
+                            .alert.alert-success(role='alert') Your request is #{request.status}ed
+
+                    if (request.status === 'complete')
+                        if (request.event.organizationId === userId)
+                            .alert.alert-success(role='alert') #{request.userName + " " + "completed " + request.event.name}
+                        else
+                            .alert.alert-success(role='alert') You have successfully completed the following event
+
+
+                    if (request.status === 'reject')
+                        if (request.event.organizationId === userId)
+                          .alert.alert-danger(role='alert') #{request.userName + " " + "was rejected for " + request.event.name}
+                        else
+                          .alert.alert-danger(role='alert') Your request was #{request.status}ed
+                           p Rejected Reason:  #{request.reasons}
+
+                    // each button changes the status field and send requests
+                    // for rejection, a brief message to why organization decided to reject can be sent
+                    form(action=`/requests/${request._id}`, method='POST')
+                        input(type="hidden" name="eventId", value=request.eventId)
+                        if (request.event.organizationId === userId)
+                            button.button.btn.btn-success.book-slot(type='submit', value='accept', name='status') Accept request
+                            button.button.btn.btn-info.book-slot(type='submit', value='complete', name='status') Mark as complete
+                            button.button.btn.btn-danger.book-slot(type='submit', value='reject', name='status') Reject request
+                            textarea.form-control(type="text" placeholder="Reason for rejection" cols="30", rows="10" name="reasons")
+
+
+
+                    //event information section derived from selected_event page
+                    .smallInfo.mt-3
+                            .box
+                                .container
+                                    .row
+                                        .col-sm-4
+                                            .box-part.text-center
+                                                i.fas.fa-map-marker-alt.fa-3x
+                                                .title.mt-3.text-capitalize
+                                                    | #{request.event.location}
+
+
+                                        .col-sm-4
+                                            .box-part.text-center
+                                                i.fas.fa-calendar-alt.fa-3x
+                                                .title.mt-3
+                                                    - var months = [ "JAN", "FEB", "MAR", "APR", "MAY", "JUNE","JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
+                                                    | #{months[(request.event.date).getMonth()]} #{(request.event.date).getDate()} #{(request.event.date.getFullYear())}
+
+                                        .col-sm-4
+                                            .box-part.text-center
+                                                i.fas.fa-tag.fa-3x(aria-hidden='true')
+                                                .title.mt-3.text-capitalize
+                                                    | #{request.event.type}
+
+                    .description.mb-6
+                        h3.heading-primary-sub.text-uppercase.mt-5.mb-3(style="font-size: 21px;") Description
+                        p #{request.event.description}
+
+                    //definition of profile modal that was mentioned above
+                    #profileModal(class="modal fade")
+                      div(class="modal-dialog modal-dialog-centered")
+                        div(class="modal-content" style="border-radius:15px")
+                          div(class="modal-header" style="margin: 0 auto;")
+                            h4(class="modal-title") #{request.userName + "'s" + '  profile' }
+
+                          div(class="modal-body")
+                            table.table.table-striped
+                              tbody
+                                tr
+                                  td
+                                    strong Full name
+                                  td #{user.firstName + ' ' + user.lastName}
+                                tr
+                                  td
+                                    strong Bio
+                                  td #{user.bio}
+
+                                tr
+                                  td
+                                    strong Experience
+                                  td #{user.experience}
+
+
+    include footer

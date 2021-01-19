@@ -1,0 +1,106 @@
+//this is a event page shared by organization and volunteer
+//renders partially different template according to the authentication
+doctype html
+html
+    include head
+
+    body
+        script
+            include search.js
+        nav
+            include navbar
+
+    //include appropriate sidebar
+    .containerfluid.content(style="min-height: 100vh")
+        .row
+            if (isOrganization)
+                .col-md-4.sidenav
+                    .input-group.search-box
+                        input#search-events.form-control(type='text', placeholder='Search Here for Name and Type')
+                        span.input-group-addon
+                            i.fas.fa-search
+                    h3.heading-primary-sub(style ="font-size: 30px") Event list
+                    include sidebar
+                    a.button.btn.btn-pink.mb-3(style="width:100%", href='/event/add')
+                        span Add Event
+            else
+                .col-md-4.sidenav
+                    .alert.alert-warning(role='alert') Using Search will
+                       p
+                       p 1) Enable infinite scroll mode.
+                       p 2) Enable viewing of Past Events
+                    .input-group.search-box
+                        input#search-events.form-control(type='text', placeholder='Search Here for Name and Type')
+                        span.input-group-addon
+                            i.fas.fa-search
+                    h3.heading-primary-sub(style ="font-size: 30px") Event list
+                    include volunteer_sidebar
+
+            //display the events, if organization change the width of a button so 3 (view,edit,delete) all rest on same line
+            .col-md-8
+                .row#events
+                    for item in events
+                        .col-md-6
+                            ul.event-list
+                                li
+                                    time
+                                        - var months = [ "JAN", "FEB", "MAR", "APR", "MAY", "JUNE","JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
+
+                                        span.day #{item.date.getDate()}
+                                        span.month #{months[item.date.getMonth()]}
+                                        span.year #{item.date.getFullYear()}
+
+                                    .info.text-center
+                                        h5.title.heading-primary-sub.mt-2(style="font-size:20px") #{item.name}
+                                            ul
+                                                li.view(style=`${(isOrganization) ? "width:30%" : "width:100% ; font-size: 35px;"}`)
+                                                    a(href=`/event/${item.id}`)
+                                                        button.btn.fill-div.fa.fa-search
+
+                                                //grant access to edit and delete, a form is sent for deletion
+                                                if (isOrganization)
+                                                    if (events.organizationId === organizationId)
+                                                        li.edit(style='width:30%;')
+                                                            a(href=`/edit/event/${item.id}`)
+                                                                button.btn.fill-div.fa.fa-pencil-square-o
+                                                        li.delete(style='width:30%;')
+                                                            form(action=`/delete/event/${item.id}` method='POST' )
+                                                                button.btn.fill-div.fa.fa-trash-o(type="submit", onclick="return confirm('Are you sure you want to delete?')")
+
+                    //pagination for the events, receive page from controller and display number in bootstrap page-link item
+                    .clearfix.hidden-sm-up(style="margin: 0 auto")
+                        nav.pt-4(aria-label="Page navigation example")
+                            if (pages > 0)
+                                ul.pagination.jusitfy-content-center
+                                    if (current_page == 1)
+                                        li.page-item.disabled
+                                            a.page-link First
+                                    else
+                                        li.page-item
+                                            a.page-link(href='/event/list/1') First
+
+                                    - var i = (current_page > 5 ? current - 4 : 1)
+                                    if (i !== 1)
+                                        li.page-item.disabled
+                                            a.page-link ...
+                                    - for (; i <= (current_page + 4) && i <= pages; i++)
+
+                                    if (i == current_page)
+                                        li.page-item.active
+                                            a.page-link #{i}
+                                    else
+                                        li.page-item
+                                            a.page-link(href=`/event/list/${i}`) #{i}
+
+                                    if (i == current_page + 4 && i < pages)
+                                        li.page-item.disabled
+                                            a.page-link ...
+
+                                    if (current_pages == pages)
+                                        li.page-item.disabled
+                                            a.page-link Last
+                                    else
+                                        li.page-item
+                                            a.page-link(href=`/event/list/${i}`) Last
+
+    include footer

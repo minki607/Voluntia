@@ -1,0 +1,25 @@
+//sidebar for organization, uses bootstrap badges to display the request counts
+
+ul.list-group.text-center
+  li.list-group-item.dashboardbar
+    a.btn(href="/dashboardadmin") Dashboard
+  li.list-group-item.dashboardbar
+    a.btn(href="/event/list") Manage events
+    badge.badge-secondary.badge-pill.ml-1 #{eventCount}
+  li.list-group-item.dashboardbar
+    a.btn(href="/booked/requests") Booked Requests
+    badge.badge-info.badge-pill.ml-1 #{pendingRequestCount}
+  li.list-group-item.dashboardbar
+    a.btn(href="/event/accepted/organization") Accepted Requests
+    badge.badge-success.badge-pill.ml-1 #{acceptedRequestCount}
+  li.list-group-item.dashboardbar
+    a.btn(href="/event/rejected/organization") Rejected Requests
+    badge.badge-danger.badge-pill.ml-1 #{rejectCount}
+  li.list-group-item.dashboardbar
+    a.btn(href="/event/completed/organization") Completed Requests
+    badge.badge-dark.badge-pill.ml-1 #{completedEventCount}
+
+
+
+
+

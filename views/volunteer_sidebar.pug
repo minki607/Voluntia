@@ -1,0 +1,23 @@
+//sidebar for volunteers, uses bootstrap badges to display the request counts
+
+ul.list-group.text-center
+  li.list-group-item.dashboardbar
+    a.btn(href='/dashboard') Dashboard
+  li.list-group-item.dashboardbar
+    a.btn(href='/event/list') View / Book events
+  li.list-group-item.dashboardbar
+    a.btn(href="/pending/requests")
+      | Pending Events
+      badge.badge-secondary.badge-pill.ml-1 #{pendingRequestCount}
+  li.list-group-item.dashboardbar
+    a.btn(href="/request/accepted")
+      | Confirmed Events
+      badge.badge-success.badge-pill.ml-1 #{acceptedRequestCount}
+  li.list-group-item.dashboardbar
+    a.btn(href="/request/rejected")
+      | Rejected Events
+      badge.badge-danger.badge-pill.ml-1 #{rejectCount}
+  li.list-group-item.dashboardbar
+    a.btn(href="/request/completed")
+      | Completed Events
+      badge.badge-dark.badge-pill.ml-1 #{completedEventCount}

@@ -1,0 +1,71 @@
+extends default
+
+block recentEvent
+
+    //homepage that extends default template (header)
+    .events
+        .container-fluid
+            //recently added event section
+            .recentEventTitle
+                h3
+                    i.fas.fa-plus.fa-2x(style="color: #c3e6ec;")
+                    |  RECENTLY ADDED
+
+            //if theres recently added events, display each events (max 4) into a owl carousel
+            if (recEvents)
+                - var months = [ "JAN", "FEB", "MAR", "APR", "MAY", "JUNE","JUL", "AUG", "SEP", "OCT", "NOV", "DEC" ];
+                    #news-slider8.owl-carousel
+                        for event in recEvents
+                                .event-slide
+                                    .event-img
+                                        img(src=`${event.image}`, alt=`${event.name}`)
+                                        .over-layer
+                                            ul.event-link
+                                                li
+                                                    a.fa.fa-search(href=`/event/${event.id}`)
+                                        .event-date
+                                            span.date #{event.date.getDate()}
+                                            span.month #{months[event.date.getMonth()]}
+                                    .event-content
+                                        h3.event-title
+                                            a(href='#') #{event.name}
+                                        p.event-description
+                                            //limit description to 200 words
+                                            | #{(event.description).substring(0, 200) + "..."}
+
+                                        a.read-more(href=`/event/${event.id}`) read more
+
+                    script
+                        include carousel.js
+
+    br
+
+    //LEADERBOARD Section
+    .row
+        .col-md-6.offset-3.mx-auto
+            .recentEventTitle.leaderTitle
+                h3(style="margin:0")
+                    i.fas.fa-medal.fa-2x(style="color: #c3e6ec;")
+                    |  LEADERBOARD
+
+            .table(style="padding: 60px;")
+                .table-cell
+                    ul.leader.text-center
+                        //if instance of topMember is not empty display them in leader board
+                        //takes the index and use that as id to display image(badge) content in style sheet
+                        if (topMember)
+                            each member,i in topMember
+                                li
+                                    span.list_num(id='rank' + (i + 1)) #{i + 1}
+                                    img(id='rank' + (i + 1))
+                                    h2(style="font-size: 15px; padding-top:20px;")
+                                        | #{member._id.firstName + " " + member._id.lastName}
+                                        span.number #{member.count}
+
+
+    include footer
+
+
+
+
+

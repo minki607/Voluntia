@@ -1,0 +1,98 @@
+# Deliverable 4
+![Volunteer acroos](https://lh3.googleusercontent.com/ShUHlPwkTzrn1GvYmLzMWQKuYpEcJZApCLZovFuXYAtCpXh39Zsqa3c73TGDgvlPf2fBV1hGfZu1)
+
+*Voluntia* is a volunteering event booking website which allows volunteers to register and participate in various volunteering activities across Victoria.
+
+We have three main functionalities for the website:
+
+## 1. Login/Sign up
+
+We have two Sing up options i.e. the user can sign in as a volunteer or as an organisation.
+
+Event organizers can login as an organizer in order to create events and also authenticate incoming requests for volunteering.
+
+Volunteers can register and login to view the events and register themselves for volunteering activities.
+
+ [Click to SignUp ](https://voluntia.herokuapp.com/signup)
+
+Steps for Sign Up:
+
+1. Click on signup button present on rightmost corner of navigation bar
+
+2. Enter details like name, email and password
+
+3. Click on register button
+
+Steps for Login:
+
+ - Click on login button present on rightmost corner of navigation bar
+
+ - Enter email and password that was entered during signup stage
+
+ - Click on login button
+
+ - On successful login you will be redirected to the dashboard
+
+**List of files:**
+
+ - Routes: 
+ - Views:
+ -  Controllers: 
+ - Models:
+
+## **2. Register for an event**
+
+Volunteers can browse the events and then register themselves for the events that they want to volunteer for.
+
+*you need to login as a **volunteer** in order to register for an event.
+
+[Login as volunteer to View/book Events](https://voluntia.herokuapp.com/login)
+
+Steps for Booking:
+
+1. Go to the event page and view it details.
+
+2. Click on “Book now” button to register.
+
+3. You will be redirected to the dashboard.
+
+4. The event will be then added to the pending list of events.
+
+5. After the organization approves your request for participation you then are successfully booked for an event.
+
+6. You can now see the event in confirmed events list.
+
+**List of files:**
+
+ - Routes: 
+ - Views:
+ -  Controllers: 
+ - Models:
+## **3. Create an event**
+
+Organizers can create an event and authenticate participation requests from volunteers.
+
+*you need to login as an **Organisation** in order to create an event.
+
+[Login as organzier to add event](https://voluntia.herokuapp.com/login)
+
+Steps for Event creation:
+
+1. Go to the organisation dashboard.
+
+2. Click on “Manage events” button.
+
+3. The scroll down to find “add event” button.
+
+4. Add event details and click on “add event” button.
+
+5. The event then will be added.
+
+6. You can also edit event by click on edit option.
+
+**List of files:**
+
+ - Routes: 
+ - Views:
+ -  Controllers: 
+ - Models:
